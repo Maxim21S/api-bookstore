@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -34,6 +36,12 @@ public class Book {
 
     @Column(name = "publication_year")
     private LocalDate publicationYear;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<Genre> genres;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<Author> authors;
 
     @Version
     @Column(name = "version")
