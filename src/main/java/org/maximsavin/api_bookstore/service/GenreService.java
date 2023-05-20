@@ -16,5 +16,5 @@ public interface GenreService {
 
     Genre update(Genre genre);
 
-    boolean deleteById(long id);
+    void deleteById(long id);
 }
