@@ -3,11 +3,12 @@ package org.maximsavin.api_bookstore.service;
 import org.maximsavin.api_bookstore.model.Book;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public interface BookService {
-    Set<Book> getAll();
+
+    List<Book> getAll();
 
     Book getById(long id);
 
