@@ -34,9 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book update(Book book) {
-        if (book.getId() == null)
-            throw new IllegalArgumentException("Book's ID cannot be null");
+    public Book update(Book book) {;
         if (!bookRepo.existsById(book.getId()))
             throw new EntityNotFoundException("Book with ID=" + book.getId() + "doesn't exist");
         return bookRepo.save(book);

@@ -38,8 +38,6 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre update(Genre genre) {
-        if (genre.getId() == null)
-            throw new IllegalArgumentException("Genre's ID cannot be null");
         if (!genreRepo.existsById(genre.getId()))
             throw new EntityNotFoundException("Genre with ID=" + genre.getId() + "doesn't exist");
         return genreRepo.save(genre);

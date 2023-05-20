@@ -35,8 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author update(Author author) {
-        if (author.getId() == null)
-            throw new IllegalArgumentException("Author's ID cannot be null");
         if (!authorRepo.existsById(author.getId()))
             throw new EntityNotFoundException("Author with ID=" + author.getId() + "doesn't exist");
         return authorRepo.save(author);
