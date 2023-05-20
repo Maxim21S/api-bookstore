@@ -1,4 +1,4 @@
-package org.maximsavin.api_bookstore;
+package org.maximsavin.api_bookstore.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

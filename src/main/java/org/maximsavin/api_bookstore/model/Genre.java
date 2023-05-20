@@ -1,4 +1,4 @@
-package org.maximsavin.api_bookstore;
+package org.maximsavin.api_bookstore.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,21 +17,21 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "genres")
 @Data
-@EqualsAndHashCode(of = {"id", "name"})
-public class Author {
+@EqualsAndHashCode(of = "name")
+public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "book_author",
-            joinColumns = @JoinColumn(name = "author_id"),
+    @JoinTable(name = "book_genre",
+            joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books;
 
