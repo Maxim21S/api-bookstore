@@ -27,7 +27,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getById(long id) {
         return genreRepo.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Genre not found with id=" + id)
+                () -> new EntityNotFoundException("Genre not found with ID=" + id)
         );
     }
 
@@ -39,9 +39,9 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre update(Genre genre) {
         if (genre.getId() == null)
-            throw new IllegalArgumentException("Genre id cannot be null");
+            throw new IllegalArgumentException("Genre's ID cannot be null");
         if (!genreRepo.existsById(genre.getId()))
-            throw new EntityNotFoundException("Genre with id=" + genre.getId() + "doesn't exist");
+            throw new EntityNotFoundException("Genre with ID=" + genre.getId() + "doesn't exist");
         return genreRepo.save(genre);
     }
 
