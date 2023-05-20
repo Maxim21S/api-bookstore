@@ -3,12 +3,12 @@ package org.maximsavin.api_bookstore.service;
 import org.maximsavin.api_bookstore.model.Genre;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public interface GenreService {
 
-    List<Genre> getAll();
+    Set<Genre> getAll();
 
     Genre getById(long id);
 
