@@ -33,6 +33,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre create(Genre genre) {
+        if (genre.getId() != null)
+            throw new IllegalArgumentException("New genre cannot contain ID");
         return genreRepo.save(genre);
     }
 
