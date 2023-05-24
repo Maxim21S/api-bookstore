@@ -53,7 +53,7 @@ class GenreServiceImplTests {
         assertThatList(result).isEqualTo(expected);
 
         // verify
-        verify(mockedRepo).findAll(); // TODO: is redundant?
+        verify(mockedRepo).findAll();
         verifyNoMoreInteractions(mockedRepo);
     }
 
