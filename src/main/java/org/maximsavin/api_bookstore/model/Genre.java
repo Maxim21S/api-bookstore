@@ -56,6 +56,8 @@ public class Genre {
         this.books = (genre.getBooks() == null)
                 ? null
                 : new HashSet<>(genre.getBooks());
-        this.version = Timestamp.valueOf(version.toLocalDateTime());
+        this.version = (genre.getVersion() == null)
+                ? null
+                : Timestamp.valueOf(version.toLocalDateTime());
     }
 }
