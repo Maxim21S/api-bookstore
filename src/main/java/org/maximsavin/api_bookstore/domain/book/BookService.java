@@ -1,6 +1,4 @@
-package org.maximsavin.api_bookstore.service;
-
-import org.maximsavin.api_bookstore.model.Book;
+package org.maximsavin.api_bookstore.domain.book;
 
 import java.util.List;
 

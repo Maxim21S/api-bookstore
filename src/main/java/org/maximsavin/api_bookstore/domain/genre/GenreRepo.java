@@ -1,6 +1,5 @@
-package org.maximsavin.api_bookstore.repository;
+package org.maximsavin.api_bookstore.domain.genre;
 
-import org.maximsavin.api_bookstore.model.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

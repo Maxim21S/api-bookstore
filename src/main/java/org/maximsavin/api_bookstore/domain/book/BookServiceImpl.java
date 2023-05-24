@@ -1,8 +1,6 @@
-package org.maximsavin.api_bookstore.service;
+package org.maximsavin.api_bookstore.domain.book;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.maximsavin.api_bookstore.model.Book;
-import org.maximsavin.api_bookstore.repository.BookRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

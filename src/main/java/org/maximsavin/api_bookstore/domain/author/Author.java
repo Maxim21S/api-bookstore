@@ -1,4 +1,4 @@
-package org.maximsavin.api_bookstore.model;
+package org.maximsavin.api_bookstore.domain.author;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.maximsavin.api_bookstore.domain.book.Book;
 
 import java.sql.Timestamp;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package org.maximsavin.api_bookstore.service;
+package org.maximsavin.api_bookstore.domain.genre;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.maximsavin.api_bookstore.model.Genre;
-import org.maximsavin.api_bookstore.repository.GenreRepo;
+import org.maximsavin.api_bookstore.domain.genre.Genre;
+import org.maximsavin.api_bookstore.domain.genre.GenreRepo;
+import org.maximsavin.api_bookstore.domain.genre.GenreServiceImpl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
