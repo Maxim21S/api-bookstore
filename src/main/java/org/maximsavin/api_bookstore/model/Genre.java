@@ -16,13 +16,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "genres")
 @EqualsAndHashCode(of = "name")
+@ToString(of = {"id", "name"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -46,4 +49,13 @@ public class Genre {
     @Version
     @Column(name = "version")
     private Timestamp version;
+
+    public Genre(Genre genre) {
+        this.id = genre.getId();
+        this.name = genre.getName();
+        this.books = (genre.getBooks() == null)
+                ? null
+                : new HashSet<>(genre.getBooks());
+        this.version = Timestamp.valueOf(version.toLocalDateTime());
+    }
 }
