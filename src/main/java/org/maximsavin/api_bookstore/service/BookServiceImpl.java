@@ -3,10 +3,12 @@ package org.maximsavin.api_bookstore.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.maximsavin.api_bookstore.model.Book;
 import org.maximsavin.api_bookstore.repository.BookRepo;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @Transactional
 public class BookServiceImpl implements BookService {
 

@@ -4,10 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import org.maximsavin.api_bookstore.model.Genre;
 import org.maximsavin.api_bookstore.repository.GenreRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @Transactional
 public class GenreServiceImpl implements GenreService {
 
