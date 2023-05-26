@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,23 +17,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatList;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GenreServiceImplTests {
 
     @Mock
     private GenreRepo mockedRepo;
+
+    @Mock
+    private ModelMapper mockedMapper;
 
     @InjectMocks
     private GenreServiceImpl underTest;
@@ -146,23 +142,33 @@ class GenreServiceImplTests {
     void update_ExistingGenre_ShouldSaveGenreAndReturnSavedGenre() {
         // given
         long id = 12L;
-        Genre genre = Genre.builder().id(id).name("Fantasy").build();
+        Genre current = Genre.builder().id(id).name("Manga").build();
         Genre expected = Genre.builder().id(id).name("Fantasy").build();
+        Genre update = Genre.builder().id(id).name("Fantasy").build();
 
         // when
         when(mockedRepo.existsById(id)).thenReturn(true);
-        when(mockedRepo.save(genre)).thenReturn(new Genre(genre));
+        when(mockedRepo.findById(id)).thenReturn(Optional.of(current));
+
+        doAnswer(invocation -> {
+            Genre source = invocation.getArgument(0);
+            Genre destination = invocation.getArgument(1);
+            destination.setName(source.getName());
+            return destination;
+        }).when(mockedMapper).map(update, current);
+
 
         // act
-        Genre result = underTest.update(genre);
+        Genre result = underTest.update(update);
 
         // assert
         assertThat(result).isEqualTo(expected);
 
         // verify
         verify(mockedRepo).existsById(id);
-        verify(mockedRepo).save(genre);
-        verifyNoMoreInteractions(mockedRepo);
+        verify(mockedRepo).findById(id);
+        verify(mockedMapper).map(update, current);
+        verifyNoMoreInteractions(mockedRepo, mockedMapper);
     }
 
     @Test

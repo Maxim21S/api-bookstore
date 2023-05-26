@@ -1,22 +1,21 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepo genreRepo;
-
-    @Autowired
-    public GenreServiceImpl(GenreRepo genreRepo) {
-        this.genreRepo = genreRepo;
-    }
+    private final ModelMapper mapper;
 
 
     @Override
@@ -27,20 +26,23 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getById(long id) {
         checkIfExists(id);
-        return genreRepo.findById(id).get();
+        Optional<Genre> optional = genreRepo.findById(id);
+        return optional.orElse(null);
     }
 
     @Override
-    public Genre create(Genre genre) {
-        if (genre.getId() != null)
+    public Genre create(Genre newGenre) {
+        if (newGenre.getId() != null)
             throw new IllegalArgumentException("New genre cannot contain ID");
-        return genreRepo.save(genre);
+        return genreRepo.save(newGenre);
     }
 
     @Override
-    public Genre update(Genre genre) {
-        checkIfExists(genre.getId());
-        return genreRepo.save(genre);
+    public Genre update(Genre update) {
+        checkIfExists(update.getId());
+        Genre managed = genreRepo.findById(update.getId()).orElse(null);
+        mapper.map(update, managed);
+        return managed;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,37 +15,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/genres")
+@RequiredArgsConstructor
 public class GenreRestController {
 
-    private final GenreService genreService;
-    private final ModelMapper mapper;
+    private final GenreDtoMapper genreDtoMapper;
 
-    @Autowired
-    public GenreRestController(GenreService genreService, ModelMapper mapper) {
-        this.genreService = genreService;
-        this.mapper = mapper;
-    }
 
     @GetMapping
     public ResponseEntity<List<GenreDtoResponse>> getAll() {
-        List<GenreDtoResponse> genres = genreService.getAll().stream()
-                .map(e -> mapper.map(e, GenreDtoResponse.class))
-                .toList();
-        return ResponseEntity.ok(genres);
+        List<GenreDtoResponse> response = genreDtoMapper.getAll();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<GenreDtoResponse> getById(@PathVariable long id) {
-        Genre genre = genreService.getById(id);
-        GenreDtoResponse response = mapper.map(genre, GenreDtoResponse.class);
+        GenreDtoResponse response = genreDtoMapper.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<GenreDtoResponse> create(@RequestBody GenreDtoRequest request) {
-        Genre genre = mapper.map(request, Genre.class);
-        genre = genreService.create(genre);
-        GenreDtoResponse response = mapper.map(genre, GenreDtoResponse.class);
+        GenreDtoResponse response = genreDtoMapper.create(request);
         return ResponseEntity.ok(response);
     }
 
@@ -54,16 +43,13 @@ public class GenreRestController {
     public ResponseEntity<GenreDtoResponse> update(
             @PathVariable long id,
             @RequestBody GenreDtoRequest request) {
-        Genre genre = genreService.getById(id);
-        mapper.map(request, genre);
-        genreService.update(genre);
-        GenreDtoResponse response = mapper.map(genre, GenreDtoResponse.class);
+        GenreDtoResponse response = genreDtoMapper.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
-        genreService.deleteById(id);
+        genreDtoMapper.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
