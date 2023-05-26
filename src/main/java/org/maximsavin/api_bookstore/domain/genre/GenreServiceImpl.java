@@ -46,13 +46,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(long id) throws EntityNotFoundException {
         checkIfExists(id);
         genreRepo.deleteById(id);
     }
 
 
-    private void checkIfExists(long id) {
+    private void checkIfExists(long id) throws EntityNotFoundException {
         if (!genreRepo.existsById(id))
             throw new EntityNotFoundException("Genre not found with ID=" + id);
     }

@@ -1,5 +1,6 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -127,9 +128,23 @@ class GenreRestControllerTests {
     }
 
     @Test
-    @Disabled
-    void deleteById_onExistingId_Should() {
+    void deleteById_NonExistingId_Should() {
+        // given
+        long id = 12L;
+        String message = "Genre not found with ID=" + id;
+        ResponseEntity<String> expected = ResponseEntity.badRequest()
+                .body(message);
+        doThrow(new EntityNotFoundException(message))
+                .when(mockedDtoService).deleteById(id);
 
+        // when
+        ResponseEntity<String> result = underTest.delete(id);
+
+        // then
+        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody()).isEqualTo(expected.getBody());
+        verify(mockedDtoService).deleteById(id);
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
 

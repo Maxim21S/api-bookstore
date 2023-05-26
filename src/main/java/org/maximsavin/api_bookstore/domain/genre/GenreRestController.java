@@ -1,6 +1,8 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +51,13 @@ public class GenreRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
-        dtoService.deleteById(id);
+        try {
+            dtoService.deleteById(id);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
+        }
         return ResponseEntity.noContent().build();
     }
 }

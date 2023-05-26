@@ -1,5 +1,6 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class GenreDtoMapperServiceImpl implements GenreDtoMapperService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(long id) throws EntityNotFoundException {
         genreService.deleteById(id);
     }
 }

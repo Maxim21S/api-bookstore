@@ -1,5 +1,7 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 public interface GenreDtoMapperService {
@@ -12,5 +14,5 @@ public interface GenreDtoMapperService {
 
     GenreDtoResponse update(long id, GenreDtoRequest request);
 
-    void deleteById(long id);
+    void deleteById(long id) throws EntityNotFoundException;
 }
