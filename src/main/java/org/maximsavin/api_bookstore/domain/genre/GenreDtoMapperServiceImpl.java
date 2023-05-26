@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GenreDtoMapperImpl implements GenreDtoMapper {
+public class GenreDtoMapperServiceImpl implements GenreDtoMapperService {
 
     private final GenreService genreService;
     private final ModelMapper mapper;

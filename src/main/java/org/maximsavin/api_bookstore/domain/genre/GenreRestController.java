@@ -18,24 +18,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreRestController {
 
-    private final GenreDtoMapper genreDtoMapper;
+    private final GenreDtoMapperService dtoService;
 
 
     @GetMapping
     public ResponseEntity<List<GenreDtoResponse>> getAll() {
-        List<GenreDtoResponse> response = genreDtoMapper.getAll();
+        List<GenreDtoResponse> response = dtoService.getAll();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<GenreDtoResponse> getById(@PathVariable long id) {
-        GenreDtoResponse response = genreDtoMapper.getById(id);
+        GenreDtoResponse response = dtoService.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<GenreDtoResponse> create(@RequestBody GenreDtoRequest request) {
-        GenreDtoResponse response = genreDtoMapper.create(request);
+        GenreDtoResponse response = dtoService.create(request);
         return ResponseEntity.ok(response);
     }
 
@@ -43,13 +43,13 @@ public class GenreRestController {
     public ResponseEntity<GenreDtoResponse> update(
             @PathVariable long id,
             @RequestBody GenreDtoRequest request) {
-        GenreDtoResponse response = genreDtoMapper.update(id, request);
+        GenreDtoResponse response = dtoService.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable long id) {
-        genreDtoMapper.deleteById(id);
+        dtoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

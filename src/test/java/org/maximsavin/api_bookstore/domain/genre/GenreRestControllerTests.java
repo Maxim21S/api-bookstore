@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class GenreRestControllerTests {
 
     @Mock
-    private GenreDtoMapper mockedDtoMapper;
+    private GenreDtoMapperService mockedDtoService;
 
     @InjectMocks
     private GenreRestController underTest;
@@ -32,7 +32,7 @@ class GenreRestControllerTests {
     void getAll_ShouldReturnAllGenreDtoResponses(List<GenreDtoResponse> dtoResponses) {
         // given
         var expected = ResponseEntity.ok(dtoResponses);
-        when(mockedDtoMapper.getAll()).thenReturn(dtoResponses);
+        when(mockedDtoService.getAll()).thenReturn(dtoResponses);
 
         // when
         ResponseEntity<List<GenreDtoResponse>> result = underTest.getAll();
@@ -40,8 +40,8 @@ class GenreRestControllerTests {
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoMapper).getAll();
-        verifyNoMoreInteractions(mockedDtoMapper);
+        verify(mockedDtoService).getAll();
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
     @Test
@@ -50,7 +50,7 @@ class GenreRestControllerTests {
         long id = 12L;
         GenreDtoResponse dto = new GenreDtoResponse(id, "Fantasy");
         ResponseEntity<GenreDtoResponse> expected = ResponseEntity.ok(dto);
-        when(mockedDtoMapper.getById(id)).thenReturn(dto);
+        when(mockedDtoService.getById(id)).thenReturn(dto);
 
         // when
         ResponseEntity<GenreDtoResponse> result = underTest.getById(id);
@@ -58,8 +58,8 @@ class GenreRestControllerTests {
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoMapper).getById(id);
-        verifyNoMoreInteractions(mockedDtoMapper);
+        verify(mockedDtoService).getById(id);
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
     @Test
@@ -73,7 +73,7 @@ class GenreRestControllerTests {
         // given
         var request = new GenreDtoRequest("Fantasy");
         var response = new GenreDtoResponse(12L, "Fantasy");
-        when(mockedDtoMapper.create(request)).thenReturn(response);
+        when(mockedDtoService.create(request)).thenReturn(response);
 
         // when
         ResponseEntity<GenreDtoResponse> result = underTest.create(request);
@@ -81,8 +81,8 @@ class GenreRestControllerTests {
         // then
         assertThat(result.getStatusCode()).isEqualTo(result.getStatusCode());
         assertThat(result.getBody()).isEqualTo(result.getBody());
-        verify(mockedDtoMapper).create(request);
-        verifyNoMoreInteractions(mockedDtoMapper);
+        verify(mockedDtoService).create(request);
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
     @Test
@@ -92,7 +92,7 @@ class GenreRestControllerTests {
         var request = new GenreDtoRequest("Horror");
         var response = new GenreDtoResponse(id, "Horror");
         ResponseEntity<GenreDtoResponse> expected = ResponseEntity.ok(response);
-        when(mockedDtoMapper.update(id, request)).thenReturn(response);
+        when(mockedDtoService.update(id, request)).thenReturn(response);
 
         // when
         ResponseEntity<GenreDtoResponse> result = underTest.update(id, request);
@@ -100,8 +100,8 @@ class GenreRestControllerTests {
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoMapper).update(id, request);
-        verifyNoMoreInteractions(mockedDtoMapper);
+        verify(mockedDtoService).update(id, request);
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
     @Test
@@ -122,8 +122,8 @@ class GenreRestControllerTests {
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoMapper).deleteById(id);
-        verifyNoMoreInteractions(mockedDtoMapper);
+        verify(mockedDtoService).deleteById(id);
+        verifyNoMoreInteractions(mockedDtoService);
     }
 
     @Test

@@ -2,7 +2,7 @@ package org.maximsavin.api_bookstore.domain.genre;
 
 import java.util.List;
 
-public interface GenreDtoMapper {
+public interface GenreDtoMapperService {
 
     List<GenreDtoResponse> getAll();
 
