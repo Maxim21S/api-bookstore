@@ -20,39 +20,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreRestController {
 
-    private final GenreDtoMapperService dtoService;
+    private final GenreDtoMapper service;
 
 
     @GetMapping
-    public ResponseEntity<List<GenreDtoResponse>> getAll() {
-        List<GenreDtoResponse> response = dtoService.getAll();
+    public ResponseEntity<List<GenreDto>> getAll() {
+        List<GenreDto> response = service.getAll();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<GenreDtoResponse> getById(@PathVariable long id) {
-        GenreDtoResponse response = dtoService.getById(id);
+    public ResponseEntity<GenreDto> getById(@PathVariable long id) {
+        GenreDto response = service.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<GenreDtoResponse> create(@RequestBody GenreDtoRequest request) {
-        GenreDtoResponse response = dtoService.create(request);
+    public ResponseEntity<GenreDto> create(@RequestBody GenreCreateRequest request) {
+        GenreDto response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GenreDtoResponse> update(
+    public ResponseEntity<GenreDto> update(
             @PathVariable long id,
-            @RequestBody GenreDtoRequest request) {
-        GenreDtoResponse response = dtoService.update(id, request);
+            @RequestBody GenreCreateRequest request) {
+        GenreDto response = service.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         try {
-            dtoService.deleteById(id);
+            service.deleteById(id);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest()
                     .contentType(MediaType.TEXT_PLAIN)

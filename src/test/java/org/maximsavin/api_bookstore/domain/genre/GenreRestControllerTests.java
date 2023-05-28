@@ -23,44 +23,44 @@ import static org.mockito.Mockito.*;
 class GenreRestControllerTests {
 
     @Mock
-    private GenreDtoMapperService mockedDtoService;
+    private GenreDtoMapper mockedService;
 
     @InjectMocks
     private GenreRestController underTest;
 
     @ParameterizedTest
     @MethodSource("getGenreDtoResponses")
-    void getAll_ShouldReturnAllGenreDtoResponses(List<GenreDtoResponse> dtoResponses) {
+    void getAll_ShouldReturnAllGenreDtoResponses(List<GenreDto> dtoResponses) {
         // given
         var expected = ResponseEntity.ok(dtoResponses);
-        when(mockedDtoService.getAll()).thenReturn(dtoResponses);
+        when(mockedService.getAll()).thenReturn(dtoResponses);
 
         // when
-        ResponseEntity<List<GenreDtoResponse>> result = underTest.getAll();
+        ResponseEntity<List<GenreDto>> result = underTest.getAll();
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoService).getAll();
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).getAll();
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test
     void getById_ExistingId_ShouldReturnGenreDtoResponse() {
         // given
         long id = 12L;
-        GenreDtoResponse dto = new GenreDtoResponse(id, "Fantasy");
-        ResponseEntity<GenreDtoResponse> expected = ResponseEntity.ok(dto);
-        when(mockedDtoService.getById(id)).thenReturn(dto);
+        GenreDto dto = new GenreDto(id, "Fantasy");
+        ResponseEntity<GenreDto> expected = ResponseEntity.ok(dto);
+        when(mockedService.getById(id)).thenReturn(dto);
 
         // when
-        ResponseEntity<GenreDtoResponse> result = underTest.getById(id);
+        ResponseEntity<GenreDto> result = underTest.getById(id);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoService).getById(id);
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).getById(id);
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test
@@ -72,37 +72,37 @@ class GenreRestControllerTests {
     @Test
     void create() {
         // given
-        var request = new GenreDtoRequest("Fantasy");
-        var response = new GenreDtoResponse(12L, "Fantasy");
-        when(mockedDtoService.create(request)).thenReturn(response);
+        var request = new GenreCreateRequest("Fantasy");
+        var response = new GenreDto(12L, "Fantasy");
+        when(mockedService.create(request)).thenReturn(response);
 
         // when
-        ResponseEntity<GenreDtoResponse> result = underTest.create(request);
+        ResponseEntity<GenreDto> result = underTest.create(request);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(result.getStatusCode());
         assertThat(result.getBody()).isEqualTo(result.getBody());
-        verify(mockedDtoService).create(request);
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).create(request);
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test
     void update() {
         // given
         long id = 12L;
-        var request = new GenreDtoRequest("Horror");
-        var response = new GenreDtoResponse(id, "Horror");
-        ResponseEntity<GenreDtoResponse> expected = ResponseEntity.ok(response);
-        when(mockedDtoService.update(id, request)).thenReturn(response);
+        var request = new GenreCreateRequest("Horror");
+        var response = new GenreDto(id, "Horror");
+        ResponseEntity<GenreDto> expected = ResponseEntity.ok(response);
+        when(mockedService.update(id, request)).thenReturn(response);
 
         // when
-        ResponseEntity<GenreDtoResponse> result = underTest.update(id, request);
+        ResponseEntity<GenreDto> result = underTest.update(id, request);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoService).update(id, request);
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).update(id, request);
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test
@@ -118,13 +118,13 @@ class GenreRestControllerTests {
         ResponseEntity<Object> expected = ResponseEntity.noContent().build();
 
         // when
-        ResponseEntity<String> result = underTest.delete(id);
+        ResponseEntity<String> result = underTest.deleteById(id);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoService).deleteById(id);
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).deleteById(id);
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test
@@ -135,16 +135,16 @@ class GenreRestControllerTests {
         ResponseEntity<String> expected = ResponseEntity.badRequest()
                 .body(message);
         doThrow(new EntityNotFoundException(message))
-                .when(mockedDtoService).deleteById(id);
+                .when(mockedService).deleteById(id);
 
         // when
-        ResponseEntity<String> result = underTest.delete(id);
+        ResponseEntity<String> result = underTest.deleteById(id);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
         assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedDtoService).deleteById(id);
-        verifyNoMoreInteractions(mockedDtoService);
+        verify(mockedService).deleteById(id);
+        verifyNoMoreInteractions(mockedService);
     }
 
 
@@ -152,7 +152,7 @@ class GenreRestControllerTests {
         return Stream.of(
                 Arguments.of(Collections.emptyList()),
                 Arguments.of(List.of(
-                        new GenreDtoResponse(1L, "Fantasy"),
-                        new GenreDtoResponse(2L, "Romance"))));
+                        new GenreDto(1L, "Fantasy"),
+                        new GenreDto(2L, "Romance"))));
     }
 }

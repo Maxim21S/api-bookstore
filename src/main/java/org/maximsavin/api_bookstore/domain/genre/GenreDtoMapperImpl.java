@@ -9,38 +9,38 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GenreDtoMapperServiceImpl implements GenreDtoMapperService {
+public class GenreDtoMapperImpl implements GenreDtoMapper {
 
     private final GenreService genreService;
     private final ModelMapper mapper;
 
 
     @Override
-    public List<GenreDtoResponse> getAll() {
+    public List<GenreDto> getAll() {
         return genreService.getAll().stream()
-                .map(e -> mapper.map(e, GenreDtoResponse.class))
+                .map(e -> mapper.map(e, GenreDto.class))
                 .toList();
     }
 
     @Override
-    public GenreDtoResponse getById(long id) {
+    public GenreDto getById(long id) {
         Genre genre = genreService.getById(id);
-        return mapper.map(genre, GenreDtoResponse.class);
+        return mapper.map(genre, GenreDto.class);
     }
 
     @Override
-    public GenreDtoResponse create(GenreDtoRequest request) {
+    public GenreDto create(GenreCreateRequest request) {
         Genre genre = mapper.map(request, Genre.class);
         genreService.create(genre);
-        return mapper.map(genre, GenreDtoResponse.class);
+        return mapper.map(genre, GenreDto.class);
     }
 
     @Override
-    public GenreDtoResponse update(long id, GenreDtoRequest request) {
+    public GenreDto update(long id, GenreCreateRequest request) {
         Genre genre = mapper.map(request, Genre.class);
         genre.setId(id);
         Genre updated = genreService.update(genre);
-        return mapper.map(updated, GenreDtoResponse.class);
+        return mapper.map(updated, GenreDto.class);
     }
 
     @Override

@@ -5,18 +5,18 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenreDtoRequestToGenreConverter
-        extends AbstractConverter<GenreDtoRequest, Genre> {
+public class GenreCreateRequestToGenreConverter
+        extends AbstractConverter<GenreCreateRequest, Genre> {
 
     @Override
-    protected Genre convert(GenreDtoRequest source) {
+    protected Genre convert(GenreCreateRequest source) {
         return Genre.builder()
                 .name(source.name())
                 .build();
     }
 
     @Override
-    public Genre convert(MappingContext<GenreDtoRequest, Genre> context) {
+    public Genre convert(MappingContext<GenreCreateRequest, Genre> context) {
         var s = context.getSource();
         var d = context.getDestination();
 

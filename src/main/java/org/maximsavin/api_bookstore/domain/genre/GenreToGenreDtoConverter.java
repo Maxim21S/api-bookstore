@@ -4,12 +4,12 @@ import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenreToGenreDtoResponseConverter
-        extends AbstractConverter<Genre, GenreDtoResponse> {
+public class GenreToGenreDtoConverter
+        extends AbstractConverter<Genre, GenreDto> {
 
     @Override
-    protected GenreDtoResponse convert(Genre source) {
-        return new GenreDtoResponse(
+    protected GenreDto convert(Genre source) {
+        return new GenreDto(
                 source.getId(),
                 source.getName());
     }
