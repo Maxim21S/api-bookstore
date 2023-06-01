@@ -1,0 +1,12 @@
+gradle/
+.idea/
+.vscode/
+bin/
+gradle/
+
+.gitignore
+docker-compose.yml
+Dockerfile
+gradlew
+gradlew.bat
+HELP.md
