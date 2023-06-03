@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mysql:
     image: mysql:8.0.33-oracle
@@ -5,27 +7,42 @@ services:
       - mysql-data:/var/lib/mysql
       - mysql-conf:/etc/mysql/conf.d
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: bookstore
+      MYSQL_USER: spring
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_spring_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 30s
       timeout: 10s
       retries: 10
 #      start_period: 20s
+    restart: on-failure
+    secrets:
+      - mysql_root_password
+      - mysql_spring_password
 
   app:
-    build: .
+    build: ./
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       mysql:
         condition: service_healthy
     restart: on-failure
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bookstore
+      SPRING_DATASOURCE_USERNAME: spring
+      SPRING_DATASOURCE_PASSWORD: spring #todo
+
 
 volumes:
   mysql-data:
   mysql-conf:
+
+
+secrets:
+  mysql_root_password:
+    file: secrets/mysql_root_password
+  mysql_spring_password:
+    file: secrets/mysql_spring_password

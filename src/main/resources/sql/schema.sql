@@ -1,7 +1,7 @@
-DROP SCHEMA IF EXISTS test_api_bookstore;
-CREATE SCHEMA test_api_bookstore;
+DROP SCHEMA IF EXISTS bookstore;
+CREATE SCHEMA bookstore;
 
-USE test_api_bookstore;
+USE bookstore;
 
 CREATE TABLE genres
 (

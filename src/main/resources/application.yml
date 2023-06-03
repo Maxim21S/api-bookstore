@@ -1,8 +1,8 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/
-    username: testUser
-    password: testPass
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/
+#    username: testUser
+#    password: testPass
   jpa:
     hibernate:
       ddl-auto: none
