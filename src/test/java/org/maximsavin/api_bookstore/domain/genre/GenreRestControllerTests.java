@@ -112,7 +112,7 @@ class GenreRestControllerTests {
     }
 
     @Test
-    void deleteById() {
+    void deleteById_ExistingId_ShouldDeleteGenreAndReturnStatus204() {
         // given
         long id = 12L;
         ResponseEntity<Object> expected = ResponseEntity.noContent().build();
@@ -128,7 +128,7 @@ class GenreRestControllerTests {
     }
 
     @Test
-    void deleteById_NonExistingId_Should() {
+    void deleteById_NonExistingId_ShouldReturnStatus400() {
         // given
         long id = 12L;
         String message = "Genre not found with ID=" + id;
