@@ -37,11 +37,13 @@ class GenreRestControllerTests {
         when(mockedService.getAll()).thenReturn(dtoResponses);
 
         // when
-        ResponseEntity<List<GenreDto>> result = underTest.getAll();
+        var result = underTest.getAll();
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(expected.getBody());
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
         verify(mockedService).getAll();
         verifyNoMoreInteractions(mockedService);
     }
@@ -49,32 +51,13 @@ class GenreRestControllerTests {
     @Test
     void getById_ExistingId_ShouldReturnGenreDtoAndStatus200() {
         // given
-        long id = 12L;
-        GenreDto dto = new GenreDto(id, "Fantasy");
-        ResponseEntity<GenreDto> expected = ResponseEntity.ok(dto);
+        var id = 12L;
+        var dto = new GenreDto(id, "Fantasy");
+        var expected = ResponseEntity.ok(dto);
         when(mockedService.getById(id)).thenReturn(dto);
 
         // when
-        ResponseEntity<Object> result = underTest.getById(id);
-
-        // then
-        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(expected.getBody());
-        verify(mockedService).getById(id);
-        verifyNoMoreInteractions(mockedService);
-    }
-
-    @Test
-    void getById_NonExistingId_ShouldReturnStatus404() {
-        // given
-        long id = 12L;
-        String message = "Genre not found with ID=" + id;
-        var expected = new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
-        doThrow(new EntityNotFoundException(message))
-                .when(mockedService).getById(id);
-
-        // when
-        ResponseEntity<Object> result = underTest.getById(id);
+        var result = underTest.getById(id);
 
         // then
         assertThat(result.getStatusCode())
@@ -86,6 +69,45 @@ class GenreRestControllerTests {
     }
 
     @Test
+    void getById_NonExistingId_ShouldReturnStatus404() {
+        // given
+        var id = 12L;
+        var message = "Genre not found with ID=" + id;
+        var expected = new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
+        doThrow(new EntityNotFoundException(message))
+                .when(mockedService).getById(id);
+
+        // when
+        var result = underTest.getById(id);
+
+        // then
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verify(mockedService).getById(id);
+        verifyNoMoreInteractions(mockedService);
+    }
+
+    @Test
+    void getById_NonValidId_ShouldReturnStatus400() {
+        // given
+        var id = -12L;
+        var message = "ID cannot be negative.";
+        var expected = new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+
+        // when
+        var result = underTest.getById(id);
+
+        // then
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verifyNoInteractions(mockedService);
+    }
+
+    @Test
     void create() {
         // given
         var request = new GenreRequest("Fantasy");
@@ -93,11 +115,13 @@ class GenreRestControllerTests {
         when(mockedService.create(request)).thenReturn(response);
 
         // when
-        ResponseEntity<GenreDto> result = underTest.create(request);
+        var result = underTest.create(request);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(result.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(result.getBody());
+        assertThat(result.getStatusCode())
+                .isEqualTo(result.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(result.getBody());
         verify(mockedService).create(request);
         verifyNoMoreInteractions(mockedService);
     }
@@ -105,18 +129,20 @@ class GenreRestControllerTests {
     @Test
     void update() {
         // given
-        long id = 12L;
+        var id = 12L;
         var request = new GenreRequest("Horror");
         var response = new GenreDto(id, "Horror");
-        ResponseEntity<GenreDto> expected = ResponseEntity.ok(response);
+        var expected = ResponseEntity.ok(response);
         when(mockedService.update(id, request)).thenReturn(response);
 
         // when
-        ResponseEntity<GenreDto> result = underTest.update(id, request);
+        var result = underTest.update(id, request);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(expected.getBody());
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
         verify(mockedService).update(id, request);
         verifyNoMoreInteractions(mockedService);
     }
@@ -130,15 +156,17 @@ class GenreRestControllerTests {
     @Test
     void deleteById_ExistingId_ShouldDeleteGenreAndReturnStatus204() {
         // given
-        long id = 12L;
-        ResponseEntity<Object> expected = ResponseEntity.noContent().build();
+        var id = 12L;
+        var expected = ResponseEntity.noContent().build();
 
         // when
-        ResponseEntity<String> result = underTest.deleteById(id);
+        var result = underTest.deleteById(id);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(expected.getBody());
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
         verify(mockedService).deleteById(id);
         verifyNoMoreInteractions(mockedService);
     }
@@ -146,19 +174,20 @@ class GenreRestControllerTests {
     @Test
     void deleteById_NonExistingId_ShouldReturnStatus400() {
         // given
-        long id = 12L;
-        String message = "Genre not found with ID=" + id;
-        ResponseEntity<String> expected = ResponseEntity.badRequest()
-                .body(message);
+        var id = 12L;
+        var message = "Genre not found with ID=" + id;
+        var expected = ResponseEntity.badRequest().body(message);
         doThrow(new EntityNotFoundException(message))
                 .when(mockedService).deleteById(id);
 
         // when
-        ResponseEntity<String> result = underTest.deleteById(id);
+        var result = underTest.deleteById(id);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
-        assertThat(result.getBody()).isEqualTo(expected.getBody());
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
         verify(mockedService).deleteById(id);
         verifyNoMoreInteractions(mockedService);
     }

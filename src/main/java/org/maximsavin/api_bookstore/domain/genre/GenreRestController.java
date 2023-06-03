@@ -26,12 +26,13 @@ public class GenreRestController {
 
     @GetMapping
     public ResponseEntity<List<GenreDto>> getAll() {
-        List<GenreDto> response = service.getAll();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(service.getAll());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable long id) {
+        if (id < 0)
+            return ResponseEntity.badRequest().body("ID cannot be negative.");
         try {
             return ResponseEntity.ok(service.getById(id));
         } catch (EntityNotFoundException e) {
@@ -41,27 +42,25 @@ public class GenreRestController {
 
     @PostMapping
     public ResponseEntity<GenreDto> create(@RequestBody GenreRequest request) {
-        GenreDto response = service.create(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(service.create(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GenreDto> update(
             @PathVariable long id,
             @RequestBody GenreRequest request) {
-        GenreDto response = service.update(id, request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(service.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id) {
+    public ResponseEntity<Object> deleteById(@PathVariable long id) {
         try {
             service.deleteById(id);
+            return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest()
                     .contentType(MediaType.TEXT_PLAIN)
                     .body(e.getMessage());
         }
-        return ResponseEntity.noContent().build();
     }
 }
