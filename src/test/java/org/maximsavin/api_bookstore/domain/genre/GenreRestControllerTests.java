@@ -72,7 +72,7 @@ class GenreRestControllerTests {
     @Test
     void create() {
         // given
-        var request = new GenreCreateRequest("Fantasy");
+        var request = new GenreRequest("Fantasy");
         var response = new GenreDto(12L, "Fantasy");
         when(mockedService.create(request)).thenReturn(response);
 
@@ -90,7 +90,7 @@ class GenreRestControllerTests {
     void update() {
         // given
         long id = 12L;
-        var request = new GenreCreateRequest("Horror");
+        var request = new GenreRequest("Horror");
         var response = new GenreDto(id, "Horror");
         ResponseEntity<GenreDto> expected = ResponseEntity.ok(response);
         when(mockedService.update(id, request)).thenReturn(response);

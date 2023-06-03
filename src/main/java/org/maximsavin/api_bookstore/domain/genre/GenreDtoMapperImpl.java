@@ -29,14 +29,14 @@ public class GenreDtoMapperImpl implements GenreDtoMapper {
     }
 
     @Override
-    public GenreDto create(GenreCreateRequest request) {
+    public GenreDto create(GenreRequest request) {
         Genre genre = mapper.map(request, Genre.class);
         genreService.create(genre);
         return mapper.map(genre, GenreDto.class);
     }
 
     @Override
-    public GenreDto update(long id, GenreCreateRequest request) {
+    public GenreDto update(long id, GenreRequest request) {
         Genre genre = mapper.map(request, Genre.class);
         genre.setId(id);
         Genre updated = genreService.update(genre);

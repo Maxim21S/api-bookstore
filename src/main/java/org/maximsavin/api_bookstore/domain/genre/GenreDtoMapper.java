@@ -10,9 +10,9 @@ public interface GenreDtoMapper {
 
     GenreDto getById(long id);
 
-    GenreDto create(GenreCreateRequest request);
+    GenreDto create(GenreRequest request);
 
-    GenreDto update(long id, GenreCreateRequest request);
+    GenreDto update(long id, GenreRequest request);
 
     void deleteById(long id) throws EntityNotFoundException;
 }

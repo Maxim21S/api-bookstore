@@ -36,7 +36,7 @@ public class GenreRestController {
     }
 
     @PostMapping
-    public ResponseEntity<GenreDto> create(@RequestBody GenreCreateRequest request) {
+    public ResponseEntity<GenreDto> create(@RequestBody GenreRequest request) {
         GenreDto response = service.create(request);
         return ResponseEntity.ok(response);
     }
@@ -44,7 +44,7 @@ public class GenreRestController {
     @PutMapping("/{id}")
     public ResponseEntity<GenreDto> update(
             @PathVariable long id,
-            @RequestBody GenreCreateRequest request) {
+            @RequestBody GenreRequest request) {
         GenreDto response = service.update(id, request);
         return ResponseEntity.ok(response);
     }
