@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
@@ -46,7 +47,7 @@ class GenreRestControllerTests {
     }
 
     @Test
-    void getById_ExistingId_ShouldReturnGenreDtoResponse() {
+    void getById_ExistingId_ShouldReturnGenreDtoAndStatus200() {
         // given
         long id = 12L;
         GenreDto dto = new GenreDto(id, "Fantasy");
@@ -54,7 +55,7 @@ class GenreRestControllerTests {
         when(mockedService.getById(id)).thenReturn(dto);
 
         // when
-        ResponseEntity<GenreDto> result = underTest.getById(id);
+        ResponseEntity<Object> result = underTest.getById(id);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(expected.getStatusCode());
@@ -64,9 +65,24 @@ class GenreRestControllerTests {
     }
 
     @Test
-    @Disabled
-    void getById_NonExistingId_() {
+    void getById_NonExistingId_ShouldReturnStatus404() {
+        // given
+        long id = 12L;
+        String message = "Genre not found with ID=" + id;
+        var expected = new ResponseEntity<Object>(message, HttpStatus.NOT_FOUND);
+        doThrow(new EntityNotFoundException(message))
+                .when(mockedService).getById(id);
 
+        // when
+        ResponseEntity<Object> result = underTest.getById(id);
+
+        // then
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verify(mockedService).getById(id);
+        verifyNoMoreInteractions(mockedService);
     }
 
     @Test

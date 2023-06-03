@@ -8,7 +8,7 @@ public interface GenreService {
 
     List<Genre> getAll();
 
-    Genre getById(long id);
+    Genre getById(long id) throws EntityNotFoundException;
 
     Genre create(Genre genre);
 

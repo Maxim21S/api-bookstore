@@ -24,7 +24,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(long id) {
+    public Genre getById(long id) throws EntityNotFoundException {
         checkIfExists(id);
         Optional<Genre> optional = genreRepo.findById(id);
         return optional.orElse(null);

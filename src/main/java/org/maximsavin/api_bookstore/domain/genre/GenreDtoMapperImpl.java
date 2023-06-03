@@ -23,7 +23,7 @@ public class GenreDtoMapperImpl implements GenreDtoMapper {
     }
 
     @Override
-    public GenreDto getById(long id) {
+    public GenreDto getById(long id) throws EntityNotFoundException {
         Genre genre = genreService.getById(id);
         return mapper.map(genre, GenreDto.class);
     }

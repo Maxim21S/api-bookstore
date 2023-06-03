@@ -8,7 +8,7 @@ public interface GenreDtoMapper {
 
     List<GenreDto> getAll();
 
-    GenreDto getById(long id);
+    GenreDto getById(long id) throws EntityNotFoundException;
 
     GenreDto create(GenreRequest request);
 
