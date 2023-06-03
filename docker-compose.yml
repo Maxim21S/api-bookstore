@@ -22,7 +22,7 @@ services:
         condition: service_healthy
     restart: on-failure
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test_api_bookstore
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
