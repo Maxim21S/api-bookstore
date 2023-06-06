@@ -1,6 +1,7 @@
 package org.maximsavin.api_bookstore.domain.genre;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -97,11 +98,13 @@ class GenreServiceImplTests {
     @Test
     void create_ShouldSaveGenreAndReturnSavedGenre() {
         // given
-        Genre newGenre = Genre.builder().name("Fantasy").build();
+        var name = "Fantasy";
+        Genre newGenre = Genre.builder().name(name).build();
         long id = 12L;
-        Genre expected = Genre.builder().id(id).name("Fantasy").build();
+        Genre expected = Genre.builder().id(id).name(name).build();
 
         // when
+        when(mockedRepo.existsByName(name)).thenReturn(false);
         when(mockedRepo.save(newGenre)).then(
                 invocation -> {
                     Genre savedGenre = invocation.getArgument(0);
@@ -117,25 +120,9 @@ class GenreServiceImplTests {
         assertThat(result).isEqualTo(expected);
 
         // verify
+        verify(mockedRepo).existsByName(name);
         verify(mockedRepo).save(newGenre);
         verifyNoMoreInteractions(mockedRepo);
-    }
-
-    @Test
-    void create_NonNullId_ShouldThrowIllegalArgumentException() {
-        // given
-        Genre newGenre = Genre.builder().id(12L).name("Fantasy").build();
-
-        // act
-        ThrowingCallable act = () -> underTest.create(newGenre);
-
-        // assert
-        assertThatThrownBy(act)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("New genre cannot contain ID");
-
-        // verify
-        verifyNoInteractions(mockedRepo);
     }
 
     @Test

@@ -3,6 +3,7 @@ package org.maximsavin.api_bookstore.domain.genre;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class GenreDtoMapperImpl implements GenreDtoMapper {
     }
 
     @Override
-    public GenreDto create(GenreRequest request) {
+    public GenreDto create(GenreRequest request) throws DataIntegrityViolationException {
         Genre genre = mapper.map(request, Genre.class);
         genreService.create(genre);
         return mapper.map(genre, GenreDto.class);

@@ -3,6 +3,7 @@ package org.maximsavin.api_bookstore.domain.genre;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +32,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre create(Genre newGenre) {
-        if (newGenre.getId() != null)
-            throw new IllegalArgumentException("New genre cannot contain ID");
+    public Genre create(Genre newGenre) throws DataIntegrityViolationException {
+        if (genreRepo.existsByName(newGenre.getName())) {
+            throw new DataIntegrityViolationException(
+                    String.format("A genre with the name '%s' already exists.", newGenre.getName()));
+        }
         return genreRepo.save(newGenre);
     }
 

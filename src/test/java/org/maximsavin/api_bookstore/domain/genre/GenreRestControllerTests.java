@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -108,22 +109,66 @@ class GenreRestControllerTests {
     }
 
     @Test
-    void create() {
+    void create_ValidRequest_ShouldCreateNewGenreAndReturnIt() {
         // given
-        var request = new GenreRequest("Fantasy");
-        var response = new GenreDto(12L, "Fantasy");
-        when(mockedService.create(request)).thenReturn(response);
+        var name = "Fantasy";
+        var request = new GenreRequest(name);
+        var response = new GenreDto(12L, name);
+        var expected = ResponseEntity.ok(response);
+        when(mockedService.create(request))
+                .thenReturn(response);
 
         // when
         var result = underTest.create(request);
 
         // then
         assertThat(result.getStatusCode())
-                .isEqualTo(result.getStatusCode());
+                .isEqualTo(expected.getStatusCode());
         assertThat(result.getBody())
-                .isEqualTo(result.getBody());
+                .isEqualTo(expected.getBody());
         verify(mockedService).create(request);
         verifyNoMoreInteractions(mockedService);
+    }
+
+    @Test
+    void create_ExistingName_ShouldReturnBadRequest() {
+        // given
+        var name = "Fantasy";
+        var message = String.format("A genre with the name '%s' already exists.", name);
+        var request = new GenreRequest(name);
+        var expected = ResponseEntity.badRequest().body(message);
+        doThrow(new DataIntegrityViolationException(message))
+                .when(mockedService).create(request);
+
+        // then
+        var result = underTest.create(request);
+
+        // when
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verify(mockedService).create(request);
+        verifyNoMoreInteractions(mockedService);
+    }
+
+    @Test
+    void create_InvalidRequest_ShouldReturnBadRequest() {
+        // given
+        var name = "";
+        var request = new GenreRequest(name);
+        var message = String.format("Invalid genre name '%s'. The name cannot be blank.", name);
+        var expected = ResponseEntity.badRequest().body(message);
+
+        // then
+        var result = underTest.create(request);
+
+        // when
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verifyNoInteractions(mockedService);
     }
 
     @Test
