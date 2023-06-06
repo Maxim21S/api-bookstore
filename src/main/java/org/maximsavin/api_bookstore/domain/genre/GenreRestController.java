@@ -54,6 +54,8 @@ public class GenreRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable long id) {
+        if (id < 0)
+            return ResponseEntity.badRequest().body("ID cannot be negative.");
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();

@@ -192,6 +192,24 @@ class GenreRestControllerTests {
         verifyNoMoreInteractions(mockedService);
     }
 
+    @Test
+    void deleteById_NonValidId_ShouldReturnStatus400() {
+        // given
+        var id = -12L;
+        var message = "ID cannot be negative.";
+        var expected = new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+
+        // when
+        var result = underTest.deleteById(id);
+
+        // then
+        assertThat(result.getStatusCode())
+                .isEqualTo(expected.getStatusCode());
+        assertThat(result.getBody())
+                .isEqualTo(expected.getBody());
+        verifyNoInteractions(mockedService);
+    }
+
 
     private static Stream<Arguments> getGenreDtoResponses() {
         return Stream.of(
