@@ -1,0 +1,12 @@
+# v3
+
+FROM gradle:8.1.1-jdk17-alpine AS cache-test
+RUN mkdir -p /home/gradle/cache
+ENV GRADLE_USER_HOME /home/gradle/cache #todo check, if it's really need
+WORKDIR /home/gradle/code
+COPY build.gradle ./
+RUN gradle dependencies #todo check, how it's really work
+
+# todo add test step
+# todo add development (debug) step
+# todo add package step

@@ -1,12 +1,11 @@
-gradle/
 .idea/
 .vscode/
 bin/
-gradle/
+build/
 
 .gitignore
 docker-compose.yml
 Dockerfile
-gradlew
-gradlew.bat
 HELP.md
+.gradle/**/*.lock
+.gradle/**/gc.properties

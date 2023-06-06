@@ -1,3 +1,5 @@
+# using gradle-image
+
 FROM gradle:8.1.1-jdk17-alpine AS cache
 RUN mkdir -p /home/gradle/cache
 ENV GRADLE_USER_HOME /home/gradle/cache
@@ -12,7 +14,7 @@ COPY src ./src
 COPY build.gradle settings.gradle ./
 RUN gradle build
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-alpine AS app
 WORKDIR /app
 COPY --from=build /home/gradle/code/build/libs/*.jar ./app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
