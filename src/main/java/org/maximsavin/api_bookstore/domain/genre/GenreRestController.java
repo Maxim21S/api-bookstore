@@ -25,8 +25,13 @@ public class GenreRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable long id) {
+
+        //todo DRY
         if (id < 0)
-            return ResponseEntity.badRequest().body("ID cannot be negative.");//todo DRY
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("ID cannot be negative.");
+
         try {
             return ResponseEntity.ok(service.getById(id));
         } catch (EntityNotFoundException e) {
@@ -36,28 +41,61 @@ public class GenreRestController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody GenreRequest request) {
+
+        //todo DRY
         if (request.name().isBlank()) {
+            var message = String.format("Invalid genre name '%s'. The name cannot be blank.", request.name());
             return ResponseEntity.badRequest()
-                    .body(String.format("Invalid genre name '%s'. The name cannot be blank.", request.name()));
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(message);
         }
+
         try {
             return ResponseEntity.ok(service.create(request));
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GenreDto> update(
+    public ResponseEntity<Object> update(
             @PathVariable long id,
             @RequestBody GenreRequest request) {
-        return ResponseEntity.ok(service.update(id, request));
+
+        //todo DRY
+        if (id < 0)
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("ID cannot be negative.");
+
+        //todo DRY
+        if (request.name().isBlank()) {
+            var message = String.format("Invalid genre name '%s'. The name cannot be blank.", request.name());
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(message);
+        }
+
+        try {
+            return ResponseEntity.ok(service.update(id, request));
+        } catch (EntityNotFoundException | DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable long id) {
+
+        //todo DRY
         if (id < 0)
-            return ResponseEntity.badRequest().body("ID cannot be negative.");//todo DRY
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("ID cannot be negative.");
+
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();

@@ -27,8 +27,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getById(long id) throws EntityNotFoundException {
         checkIfExists(id);
-        Optional<Genre> optional = genreRepo.findById(id);
-        return optional.orElse(null);
+        return genreRepo.findById(id).get();
     }
 
     @Override
@@ -41,9 +40,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre update(Genre update) {
+    public Genre update(Genre update) throws EntityNotFoundException, DataIntegrityViolationException {
         checkIfExists(update.getId());
-        Genre managed = genreRepo.findById(update.getId()).orElse(null);
+        if (genreRepo.existsByName(update.getName())) {
+            throw new DataIntegrityViolationException(
+                    String.format("A genre with the name '%s' already exists.", update.getName()));
+        }
+        Genre managed = genreRepo.findById(update.getId()).get();
         mapper.map(update, managed);
         return managed;
     }

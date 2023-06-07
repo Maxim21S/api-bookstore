@@ -37,7 +37,7 @@ public class GenreDtoMapperImpl implements GenreDtoMapper {
     }
 
     @Override
-    public GenreDto update(long id, GenreRequest request) {
+    public GenreDto update(long id, GenreRequest request) throws EntityNotFoundException, DataIntegrityViolationException {
         Genre genre = mapper.map(request, Genre.class);
         genre.setId(id);
         Genre updated = genreService.update(genre);

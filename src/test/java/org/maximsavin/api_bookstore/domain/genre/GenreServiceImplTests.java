@@ -153,6 +153,7 @@ class GenreServiceImplTests {
 
         // verify
         verify(mockedRepo).existsById(id);
+        verify(mockedRepo).existsByName(update.getName());
         verify(mockedRepo).findById(id);
         verify(mockedMapper).map(update, current);
         verifyNoMoreInteractions(mockedRepo, mockedMapper);

@@ -13,7 +13,7 @@ public interface GenreDtoMapper {
 
     GenreDto create(GenreRequest request) throws DataIntegrityViolationException;
 
-    GenreDto update(long id, GenreRequest request);
+    GenreDto update(long id, GenreRequest request) throws EntityNotFoundException, DataIntegrityViolationException;
 
     void deleteById(long id) throws EntityNotFoundException;
 }

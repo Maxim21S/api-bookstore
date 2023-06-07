@@ -13,7 +13,7 @@ public interface GenreService {
 
     Genre create(Genre genre) throws DataIntegrityViolationException;
 
-    Genre update(Genre genre);
+    Genre update(Genre genre) throws EntityNotFoundException, DataIntegrityViolationException;
 
     void deleteById(long id) throws EntityNotFoundException;
 }
