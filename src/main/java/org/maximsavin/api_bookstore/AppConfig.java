@@ -1,5 +1,7 @@
 package org.maximsavin.api_bookstore;
 
+import org.maximsavin.api_bookstore.domain.author.AuthorRequestToAuthorConverter;
+import org.maximsavin.api_bookstore.domain.author.AuthorToAuthorDtoConverter;
 import org.maximsavin.api_bookstore.domain.genre.GenreRequestToGenreConverter;
 import org.maximsavin.api_bookstore.domain.genre.GenreToGenreDtoConverter;
 import org.modelmapper.ModelMapper;
@@ -17,6 +19,8 @@ public class AppConfig {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         mapper.addConverter(context.getBean(GenreToGenreDtoConverter.class));
         mapper.addConverter(context.getBean(GenreRequestToGenreConverter.class));
+        mapper.addConverter(context.getBean(AuthorToAuthorDtoConverter.class));
+        mapper.addConverter(context.getBean(AuthorRequestToAuthorConverter.class));
         return mapper;
     }
 }
