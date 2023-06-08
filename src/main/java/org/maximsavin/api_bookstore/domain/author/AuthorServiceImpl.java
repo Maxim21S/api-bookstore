@@ -1,6 +1,8 @@
 package org.maximsavin.api_bookstore.domain.author;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,14 +10,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepo authorRepo;
-
-    public AuthorServiceImpl(AuthorRepo authorRepo) {
-        this.authorRepo = authorRepo;
-    }
-
+    private final ModelMapper mapper;
 
     @Override
     public List<Author> getAll() {
@@ -25,7 +24,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getById(long id) {
         return authorRepo.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Author not found with ID=" + id));
+                () -> new EntityNotFoundException(
+                        String.format("Author not found with ID=%d", id)));
     }
 
     @Override
@@ -35,14 +35,25 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author update(Author author) {
-        if (!authorRepo.existsById(author.getId()))
-            throw new EntityNotFoundException("Author with ID=" + author.getId() + "doesn't exist");
-        return authorRepo.save(author);
+        var optional = authorRepo.findById(author.getId());
+
+        if (optional.isEmpty())
+            throw new EntityNotFoundException(
+                    String.format("Author with ID=%d doesn't exist", author.getId()));
+
+        var managed = optional.get();
+        mapper.map(author, managed);
+        return managed;
     }
 
     @Override
     public void deleteById(long id) {
-        getById(id);    // checks if there is an entity with the id
+        var optional = authorRepo.findById(id);
+
+        if (optional.isEmpty())
+            throw new EntityNotFoundException(
+                    String.format("Author with ID=%d doesn't exist", id));
+
         authorRepo.deleteById(id);
     }
 }
