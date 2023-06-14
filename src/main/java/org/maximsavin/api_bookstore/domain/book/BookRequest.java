@@ -16,13 +16,16 @@ import java.util.Set;
  * DTO for {@link Book}
  */
 public record BookRequest(
-        @NotBlank @Length(max = 255)
+        @NotBlank
+        @Length(max = 255)
         String title,
 
         @Length(max = 2000)
         String description,
 
-        @NotNull @Pattern(regexp = "^[0-9]{10}$|^[0-9]{13}$") @Length(max = 20)
+        @NotNull
+        @Length(max = 20)
+        @Pattern(regexp = "^[0-9]{10}$|^[0-9]{13}$")
         String isbn,
 
         @PastOrPresent
