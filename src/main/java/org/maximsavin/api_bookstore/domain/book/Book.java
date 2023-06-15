@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -61,6 +62,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @Fetch(FetchMode.SUBSELECT)
+    @OrderBy("name")
     private Set<Genre> genres;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -70,6 +72,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     @Fetch(FetchMode.SUBSELECT)
+    @OrderBy("name")
     private Set<Author> authors;
 
     @Version
