@@ -2,7 +2,6 @@ package org.maximsavin.api_bookstore.domain.author;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepo authorRepo;
-    private final ModelMapper mapper;
+    private final AuthorMapper mapper;
 
     @Override
     public List<Author> getAll() {
@@ -42,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
                     String.format("Author with ID=%d doesn't exist", author.getId()));
 
         var managed = optional.get();
-        mapper.map(author, managed);
+        mapper.updateAuthor(author, managed);
         return managed;
     }
 
