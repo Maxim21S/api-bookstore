@@ -13,3 +13,14 @@ spring:
       mode: always
       schema-locations: classpath:sql/schema.sql
       data-locations: classpath:sql/data.sql
+  mvc:
+    log-request-details: true
+  codec:
+    log-request-details: true
+
+logging:
+  level:
+    root: info
+    web: debug
+  file:
+    name: log/myapp.log
