@@ -40,8 +40,8 @@ CREATE TABLE book_author
     book_id   BIGINT NOT NULL,
     author_id BIGINT NOT NULL,
     CONSTRAINT pk_book_author PRIMARY KEY (book_id, author_id),
-    CONSTRAINT fk_book_author_book_id FOREIGN KEY (book_id) REFERENCES books (id),
-    CONSTRAINT fk_book_author_author_id FOREIGN KEY (author_id) REFERENCES authors (id)
+    CONSTRAINT fk_book_author_book_id FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+    CONSTRAINT fk_book_author_author_id FOREIGN KEY (author_id) REFERENCES authors (id) ON DELETE CASCADE
 );
 
 CREATE TABLE book_genre
@@ -49,6 +49,6 @@ CREATE TABLE book_genre
     book_id  BIGINT NOT NULL,
     genre_id BIGINT NOT NULL,
     CONSTRAINT pk_book_genre PRIMARY KEY (book_id, genre_id),
-    CONSTRAINT fk_book_genre_book_id FOREIGN KEY (book_id) REFERENCES books (id),
-    CONSTRAINT fk_book_genre_genre_id FOREIGN KEY (genre_id) REFERENCES genres (id)
+    CONSTRAINT fk_book_genre_book_id FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+    CONSTRAINT fk_book_genre_genre_id FOREIGN KEY (genre_id) REFERENCES genres (id) ON DELETE CASCADE
 );
