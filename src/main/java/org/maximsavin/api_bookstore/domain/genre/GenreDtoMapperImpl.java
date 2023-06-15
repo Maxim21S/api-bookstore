@@ -2,7 +2,6 @@ package org.maximsavin.api_bookstore.domain.genre;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -13,35 +12,35 @@ import java.util.List;
 public class GenreDtoMapperImpl implements GenreDtoMapper {
 
     private final GenreService genreService;
-    private final ModelMapper mapper;
+    private final GenreMapper mapper;
 
 
     @Override
     public List<GenreDto> getAll() {
         return genreService.getAll().stream()
-                .map(e -> mapper.map(e, GenreDto.class))
+                .map(mapper::genreToGenreDto)
                 .toList();
     }
 
     @Override
     public GenreDto getById(long id) throws EntityNotFoundException {
         Genre genre = genreService.getById(id);
-        return mapper.map(genre, GenreDto.class);
+        return mapper.genreToGenreDto(genre);
     }
 
     @Override
     public GenreDto create(GenreRequest request) throws DataIntegrityViolationException {
-        Genre genre = mapper.map(request, Genre.class);
-        genreService.create(genre);
-        return mapper.map(genre, GenreDto.class);
+        Genre genre = mapper.genreRequestToGenre(request);
+        genre = genreService.create(genre);
+        return mapper.genreToGenreDto(genre);
     }
 
     @Override
     public GenreDto update(long id, GenreRequest request) throws EntityNotFoundException, DataIntegrityViolationException {
-        Genre genre = mapper.map(request, Genre.class);
+        Genre genre = mapper.genreRequestToGenre(request);
         genre.setId(id);
         Genre updated = genreService.update(genre);
-        return mapper.map(updated, GenreDto.class);
+        return mapper.genreToGenreDto(updated);
     }
 
     @Override

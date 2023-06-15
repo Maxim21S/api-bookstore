@@ -2,7 +2,6 @@ package org.maximsavin.api_bookstore.domain.genre;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,7 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepo genreRepo;
-    private final ModelMapper mapper;
+    private final GenreMapper mapper;
 
 
     @Override
@@ -46,7 +45,7 @@ public class GenreServiceImpl implements GenreService {
                     String.format("A genre with the name '%s' already exists.", update.getName()));
         }
         Genre managed = genreRepo.findById(update.getId()).get();
-        mapper.map(update, managed);
+        mapper.updateGenre(update, managed);
         return managed;
     }
 

@@ -29,7 +29,7 @@ class GenreServiceImplTests {
     private GenreRepo mockedRepo;
 
     @Mock
-    private ModelMapper mockedMapper;
+    private GenreMapper mockedMapper;
 
     @InjectMocks
     private GenreServiceImpl underTest;
@@ -142,7 +142,7 @@ class GenreServiceImplTests {
             Genre destination = invocation.getArgument(1);
             destination.setName(source.getName());
             return destination;
-        }).when(mockedMapper).map(update, current);
+        }).when(mockedMapper).updateGenre(update, current);
 
 
         // act
@@ -155,7 +155,7 @@ class GenreServiceImplTests {
         verify(mockedRepo).existsById(id);
         verify(mockedRepo).existsByName(update.getName());
         verify(mockedRepo).findById(id);
-        verify(mockedMapper).map(update, current);
+        verify(mockedMapper).updateGenre(update, current);
         verifyNoMoreInteractions(mockedRepo, mockedMapper);
     }
 
