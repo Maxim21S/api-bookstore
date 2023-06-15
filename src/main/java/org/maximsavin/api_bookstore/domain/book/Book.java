@@ -2,16 +2,26 @@ package org.maximsavin.api_bookstore.domain.book;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.maximsavin.api_bookstore.domain.genre.Genre;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.maximsavin.api_bookstore.domain.author.Author;
+import org.maximsavin.api_bookstore.domain.genre.Genre;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -21,6 +31,11 @@ import java.util.Set;
 @Table(name = "books")
 @Data
 @EqualsAndHashCode(of = "isbn")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Book {
 
     @Id
@@ -39,10 +54,22 @@ public class Book {
     @Column(name = "publication_year")
     private LocalDate publicationYear;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Genre> genres;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Author> authors;
 
     @Version
