@@ -42,7 +42,8 @@ public class Genre {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "book_genre",
+    @JoinTable(
+            name = "book_genre",
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books;

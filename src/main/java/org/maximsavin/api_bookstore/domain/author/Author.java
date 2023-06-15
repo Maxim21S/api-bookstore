@@ -41,7 +41,8 @@ public class Author {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "book_author",
+    @JoinTable(
+            name = "book_author",
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books;
